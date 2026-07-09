@@ -435,4 +435,32 @@
       }
     });
   }
+
+  // Уведомление о cookie при первом визите
+  var COOKIE_KEY = "cookieConsent";
+  var cookieBanner = document.getElementById("cookie-banner");
+  var cookieAccept = document.getElementById("cookie-accept");
+
+  if (cookieBanner && cookieAccept) {
+    function hideCookieBanner() {
+      cookieBanner.classList.remove("is-visible");
+      cookieBanner.setAttribute("hidden", "");
+    }
+
+    function showCookieBanner() {
+      cookieBanner.removeAttribute("hidden");
+      requestAnimationFrame(function () {
+        cookieBanner.classList.add("is-visible");
+      });
+    }
+
+    if (!localStorage.getItem(COOKIE_KEY)) {
+      showCookieBanner();
+    }
+
+    cookieAccept.addEventListener("click", function () {
+      localStorage.setItem(COOKIE_KEY, "accepted");
+      hideCookieBanner();
+    });
+  }
 })();

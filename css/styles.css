@@ -1597,7 +1597,10 @@ button.btn--primary.btn--magnetic:hover {
   font-size: 0.9rem;
 }
 
-.pricing__cta {
+.pricing__promo {
+  color: var(--champagne-light);
+  font-weight: 500;
+}
   display: inline-flex;
   width: 100%;
   margin-top: 0.9rem;

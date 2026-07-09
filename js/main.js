@@ -5,6 +5,46 @@
   var BOT_TOKEN = "8605850996:AAFy0j4FMt6wrcAIFQsRcQ6sV5X_BAC_ATA";
   var CHAT_ID = "526988738";
   var TELEGRAM_HANDLE = "galina1901";
+  var INTERACTIVE_PROMO_END = new Date(2026, 6, 13);
+
+  function getInteractivePricing() {
+    var isPromo = new Date() < INTERACTIVE_PROMO_END;
+    if (isPromo) {
+      return {
+        price: "7 500",
+        cta: "Забронировать за 7 500 ₽",
+        promoNote: "Акция до 12 июля включительно — далее от 10 000 ₽"
+      };
+    }
+    return {
+      price: "10 000",
+      cta: "Забронировать от 10 000 ₽",
+      promoNote: ""
+    };
+  }
+
+  function applyInteractivePricing() {
+    var pricing = getInteractivePricing();
+    var priceEl = document.getElementById("interactive-price");
+    var promoEl = document.getElementById("interactive-promo-note");
+    var ctaEl = document.getElementById("interactive-cta");
+    var quizPayEl = document.getElementById("quiz-result-pay");
+
+    if (priceEl) priceEl.textContent = "от " + pricing.price + " ₽";
+    if (ctaEl) ctaEl.textContent = pricing.cta;
+    if (quizPayEl) quizPayEl.textContent = pricing.cta.replace("Забронировать", "Забронировать интерактив");
+    if (promoEl) {
+      if (pricing.promoNote) {
+        promoEl.textContent = pricing.promoNote;
+        promoEl.removeAttribute("hidden");
+      } else {
+        promoEl.textContent = "";
+        promoEl.setAttribute("hidden", "");
+      }
+    }
+  }
+
+  applyInteractivePricing();
 
   var yearEl = document.getElementById("year");
   if (yearEl) {
@@ -303,7 +343,9 @@
     quizResultLink.href = "https://t.me/galina1901?text=" + tgText;
     if (quizResultPay) {
       if (quizAnswers.need === "quiz") {
+        var pricing = getInteractivePricing();
         quizResultPay.removeAttribute("hidden");
+        quizResultPay.textContent = pricing.cta.replace("Забронировать", "Забронировать интерактив");
         quizResultLink.textContent = "Обсудить в Telegram";
         quizResultLink.className = "btn btn--ghost btn--magnetic";
       } else {

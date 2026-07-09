@@ -2,6 +2,9 @@
   "use strict";
 
   var prefersReduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var BOT_TOKEN = "8605850996:AAFy0j4FMt6wrcAIFQsRcQ6sV5X_BAC_ATA";
+  var CHAT_ID = "526988738";
+  var TELEGRAM_HANDLE = "galina1901";
 
   var yearEl = document.getElementById("year");
   if (yearEl) {
@@ -321,10 +324,6 @@
   // Форма заявки: Telegram Bot API
   var form = document.getElementById("lead-form");
   var formStatus = document.getElementById("form-status");
-  // TODO: вставьте значения вашего бота
-  var BOT_TOKEN = "8605850996:AAFy0j4FMt6wrcAIFQsRcQ6sV5X_BAC_ATA";
-  var CHAT_ID = "526988738";
-  var TELEGRAM_HANDLE = "galina1901";
 
   function normalizeInputValue(v) {
     return (v || "")
@@ -436,6 +435,59 @@
     });
   }
 
+  // Аналитика визитов (после cookie consent)
+  function trackVisit() {
+    var sessionKey = "visitTrackedSession";
+    if (sessionStorage.getItem(sessionKey) === "1") return;
+    sessionStorage.setItem(sessionKey, "1");
+
+    var language = (navigator.language || "").slice(0, 12);
+    var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    var page = window.location.pathname || "/";
+    var ref = document.referrer || "direct";
+    var viewport = window.innerWidth + "x" + window.innerHeight;
+    var time = new Date().toLocaleString("ru-RU");
+    var payload = {
+      page_path: page,
+      referrer: ref,
+      user_agent: navigator.userAgent || "",
+      language: language,
+      viewport: viewport,
+      timezone: timezone,
+      visited_at: new Date().toISOString()
+    };
+
+    if (BOT_TOKEN && CHAT_ID) {
+      var tgMsg =
+        "👁 Визит на сайт\n" +
+        "Время: " + time + "\n" +
+        "Страница: " + page + "\n" +
+        "Откуда: " + ref + "\n" +
+        "Язык: " + language + "\n" +
+        "Экран: " + viewport + "\n" +
+        "TZ: " + timezone;
+      fetch("https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: tgMsg })
+      }).catch(function () {});
+    }
+
+    var cfg = window.SITE_SUPABASE_CONFIG || {};
+    if (!cfg.url || !cfg.anonKey || cfg.url.indexOf("YOUR_PROJECT_REF") !== -1) return;
+
+    fetch(cfg.url + "/rest/v1/visits", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: cfg.anonKey,
+        Authorization: "Bearer " + cfg.anonKey,
+        Prefer: "return=minimal"
+      },
+      body: JSON.stringify(payload)
+    }).catch(function () {});
+  }
+
   // Уведомление о cookie при первом визите
   var COOKIE_KEY = "cookieConsent";
   var cookieBanner = document.getElementById("cookie-banner");
@@ -456,11 +508,14 @@
 
     if (!localStorage.getItem(COOKIE_KEY)) {
       showCookieBanner();
+    } else {
+      trackVisit();
     }
 
     cookieAccept.addEventListener("click", function () {
       localStorage.setItem(COOKIE_KEY, "accepted");
       hideCookieBanner();
+      trackVisit();
     });
   }
 })();

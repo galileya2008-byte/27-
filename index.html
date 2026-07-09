@@ -523,7 +523,10 @@
   <footer class="footer">
     <div class="container footer__inner">
       <p class="footer__copy">© <span id="year"></span> Галина Оноприенко. Вайб-кодер · Prompt Engineer</p>
-      <a href="#top" class="footer__up">Наверх</a>
+      <div class="footer__actions">
+        <a href="admin.html" class="footer__admin" aria-label="Админка статистики">·</a>
+        <a href="#top" class="footer__up">Наверх</a>
+      </div>
     </div>
   </footer>
 
@@ -531,12 +534,13 @@
     <div class="cookie-banner__inner">
       <p class="cookie-banner__title" id="cookie-title">Уведомление о cookie</p>
       <p class="cookie-banner__text" id="cookie-desc">
-        Мы используем файлы cookie для корректной работы сайта. Продолжая пользоваться сайтом, вы соглашаетесь с их использованием.
+        Мы используем cookie и базовую аналитику для корректной работы сайта. Продолжая пользоваться сайтом, вы соглашаетесь с их использованием.
       </p>
       <button type="button" class="btn btn--primary cookie-banner__btn" id="cookie-accept">Принять</button>
     </div>
   </div>
 
+  <script src="js/supabase-config.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

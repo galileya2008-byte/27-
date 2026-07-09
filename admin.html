@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Админка статистики</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Figtree:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="page">
+  <main class="section">
+    <div class="container">
+      <h1 class="section__title">Статистика сайта</h1>
+
+      <section class="form" id="admin-auth">
+        <p class="form__hint">Войдите через Supabase Auth, чтобы смотреть статистику.</p>
+        <div class="form__row">
+          <label class="form__label" for="admin-email">Email</label>
+          <input class="form__input" type="email" id="admin-email" autocomplete="email" />
+        </div>
+        <div class="form__row">
+          <label class="form__label" for="admin-password">Пароль</label>
+          <input class="form__input" type="password" id="admin-password" autocomplete="current-password" />
+        </div>
+        <button id="admin-login" class="btn btn--primary" type="button">Войти</button>
+        <p class="form__status" id="admin-status" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="form" id="admin-panel" hidden>
+        <p class="form__hint">Данные обновляются кнопкой ниже.</p>
+        <div class="hero__actions" style="margin-bottom: 1rem;">
+          <button id="refresh-stats" class="btn btn--primary" type="button">Обновить</button>
+          <button id="logout-stats" class="btn btn--ghost" type="button">Выйти</button>
+        </div>
+        <div class="cards" id="stats-cards"></div>
+        <div class="form__row">
+          <label class="form__label">Последние 30 визитов</label>
+          <div style="overflow:auto;">
+            <table id="stats-table" style="width:100%; border-collapse: collapse;"></table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

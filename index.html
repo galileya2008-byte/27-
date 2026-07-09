@@ -285,24 +285,6 @@
       <div class="container">
         <h2 class="section__title section__title--center reveal" id="projects-title">Проекты и AI-ассистенты</h2>
         <div class="projects__grid">
-          <article class="project reveal project--clickable" data-url="https://t.me/astrogoalbot" tabindex="0" role="link" aria-label="Открыть проект Astro Goal Bot">
-            <div class="project__visual" aria-hidden="true">
-              <span class="project__icon">
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="20" cy="20" r="15" stroke="currentColor" stroke-width="1.6"/>
-                  <path d="M20 8v24M8 20h24M12.5 12.5l15 15M27.5 12.5l-15 15" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                </svg>
-              </span>
-            </div>
-            <h3 class="project__title">AI-чат-бот с астрологическими посланиями</h3>
-            <p class="project__text">
-              Бот сопровождает пользователя 7 дней посланиями, возвращает фокус к цели недели и снижает риск «слиться».
-            </p>
-            <p class="project__text">
-              Пример: <a class="project__link" href="https://t.me/astrogoalbot" target="_blank" rel="noopener noreferrer">@astrogoalbot</a>
-            </p>
-            <span class="project__tag">AI-ассистент · Telegram · @astrogoalbot</span>
-          </article>
           <article class="project reveal project--clickable" data-url="https://pinbonus.lovable.app/" tabindex="0" role="link" aria-label="Открыть проект Pinbonus">
             <div class="project__visual project__visual--2" aria-hidden="true">
               <span class="project__icon">
@@ -491,13 +473,15 @@
             <p class="pricing__value">от 15 000 руб</p>
           </article>
           <article class="pricing__item reveal">
-            <h3 class="pricing__name">Чат-боты</h3>
-            <p class="pricing__value">от 15 000 руб</p>
-          </article>
-          <article class="pricing__item reveal">
             <h3 class="pricing__name">Интерактив / квизы с обратной связью</h3>
-            <p class="pricing__value">от 15 000 руб</p>
-            <p class="pricing__note">С переводом пользователя в ваш профиль / Telegram.</p>
+            <p class="pricing__value">от 7 500 ₽</p>
+            <p class="pricing__note">Квиз, диагностика или карта с переходом в Telegram, WhatsApp или оплату.</p>
+            <a
+              href="https://neirogalina.ru/interactiv_voronka"
+              class="btn btn--primary pricing__cta btn--magnetic"
+              target="_blank"
+              rel="noopener noreferrer"
+            >Забронировать за 7 500 ₽</a>
           </article>
         </div>
       </div>
@@ -515,7 +499,6 @@
           <div class="quiz__options" id="quiz-options">
             <button type="button" class="quiz__option btn--magnetic" data-value="site">Сайт под ключ</button>
             <button type="button" class="quiz__option btn--magnetic" data-value="assistant">AI-ассистент</button>
-            <button type="button" class="quiz__option btn--magnetic" data-value="bot">Чат-бот в Telegram</button>
             <button type="button" class="quiz__option btn--magnetic" data-value="quiz">Интерактив / квиз</button>
           </div>
           <div class="quiz__nav">
@@ -526,13 +509,23 @@
         <div class="quiz__result reveal" id="quiz-result" hidden>
           <p class="quiz__result-title" id="quiz-result-title"></p>
           <p class="quiz__result-text" id="quiz-result-text"></p>
-          <a
-            id="quiz-result-link"
-            href="https://t.me/galina1901"
-            class="btn btn--primary btn--magnetic"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Обсудить это в Telegram</a>
+          <div class="quiz__result-actions">
+            <a
+              id="quiz-result-pay"
+              href="https://neirogalina.ru/interactiv_voronka"
+              class="btn btn--primary btn--magnetic"
+              target="_blank"
+              rel="noopener noreferrer"
+              hidden
+            >Забронировать интерактив за 7 500 ₽</a>
+            <a
+              id="quiz-result-link"
+              href="https://t.me/galina1901"
+              class="btn btn--ghost btn--magnetic"
+              target="_blank"
+              rel="noopener noreferrer"
+            >Обсудить в Telegram</a>
+          </div>
         </div>
       </div>
     </section>

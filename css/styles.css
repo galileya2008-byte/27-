@@ -1597,6 +1597,20 @@ button.btn--primary.btn--magnetic:hover {
   font-size: 0.9rem;
 }
 
+.pricing__cta {
+  display: inline-flex;
+  width: 100%;
+  margin-top: 0.9rem;
+  padding: 0.72rem 1rem;
+  font-size: 0.82rem;
+}
+
+.quiz__result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
 /* Mini quiz */
 .quiz {
   border-top: 1px solid var(--line);

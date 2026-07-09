@@ -223,6 +223,7 @@
   var quizResultTitle = document.getElementById("quiz-result-title");
   var quizResultText = document.getElementById("quiz-result-text");
   var quizResultLink = document.getElementById("quiz-result-link");
+  var quizResultPay = document.getElementById("quiz-result-pay");
   var quizAnswers = { need: "", niche: "", goal: "" };
   var quizStep = 0;
   var quizSteps = [
@@ -233,7 +234,6 @@
       options: [
         { value: "site", label: "Сайт под ключ" },
         { value: "assistant", label: "AI-ассистент" },
-        { value: "bot", label: "Чат-бот в Telegram" },
         { value: "quiz", label: "Интерактив / квиз" }
       ]
     },
@@ -301,6 +301,17 @@
       "Хочу обсудить проект."
     );
     quizResultLink.href = "https://t.me/galina1901?text=" + tgText;
+    if (quizResultPay) {
+      if (quizAnswers.need === "quiz") {
+        quizResultPay.removeAttribute("hidden");
+        quizResultLink.textContent = "Обсудить в Telegram";
+        quizResultLink.className = "btn btn--ghost btn--magnetic";
+      } else {
+        quizResultPay.setAttribute("hidden", "");
+        quizResultLink.textContent = "Обсудить это в Telegram";
+        quizResultLink.className = "btn btn--primary btn--magnetic";
+      }
+    }
     quizResult.hidden = false;
   }
   if (quizBox && quizBack && quizNext) {

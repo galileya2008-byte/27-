@@ -355,6 +355,7 @@
       }
     }
     quizResult.hidden = false;
+    reachMetrikaGoal("quiz_complete");
   }
   if (quizBox && quizBack && quizNext) {
     renderQuizStep();
@@ -464,6 +465,7 @@
             formStatus.className = "form__status is-ok";
             formStatus.textContent = "Заявка успешно отправлена в Telegram.";
             form.reset();
+            reachMetrikaGoal("lead_submit");
           } else {
             throw new Error("telegram_api_error");
           }
@@ -518,6 +520,33 @@
       trackLinks: true,
       accurateTrackBounce: true,
       webvisor: true
+    });
+  }
+
+  function reachMetrikaGoal(goalId) {
+    if (!goalId || localStorage.getItem("cookieConsent") !== "accepted") return;
+    var counterId = parseInt(window.SITE_METRIKA_ID, 10);
+    if (!counterId || isNaN(counterId)) return;
+    if (!metrikaStarted) initMetrika();
+    if (typeof window.ym === "function") {
+      window.ym(counterId, "reachGoal", goalId);
+    }
+  }
+
+  var metrikaGoalsBound = false;
+  function initMetrikaGoalTracking() {
+    if (metrikaGoalsBound || localStorage.getItem("cookieConsent") !== "accepted") return;
+    metrikaGoalsBound = true;
+    document.addEventListener("click", function (e) {
+      var link = e.target && e.target.closest ? e.target.closest("a[href]") : null;
+      if (!link) return;
+      var href = link.getAttribute("href") || "";
+      if (href.indexOf("t.me/galina1901") !== -1) {
+        reachMetrikaGoal("telegram_click");
+      }
+      if (href.indexOf("neirogalina.ru/interactiv_voronka") !== -1) {
+        reachMetrikaGoal("interactive_pay");
+      }
     });
   }
 
@@ -596,6 +625,7 @@
       showCookieBanner();
     } else {
       initMetrika();
+      initMetrikaGoalTracking();
       trackVisit();
     }
 
@@ -603,6 +633,7 @@
       localStorage.setItem(COOKIE_KEY, "accepted");
       hideCookieBanner();
       initMetrika();
+      initMetrikaGoalTracking();
       trackVisit();
     });
   }

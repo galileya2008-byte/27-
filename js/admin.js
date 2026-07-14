@@ -116,11 +116,15 @@
     if (window.AdminPodcasts && window.AdminPodcasts.loadList) {
       window.AdminPodcasts.loadList();
     }
+    if (window.AdminArticles && window.AdminArticles.loadList) {
+      window.AdminArticles.loadList();
+    }
   }
 
   var tabButtons = document.querySelectorAll(".admin-tab");
   var statsPanel = document.getElementById("admin-stats-panel");
   var podcastsPanel = document.getElementById("admin-podcasts-panel");
+  var articlesPanel = document.getElementById("admin-articles-panel");
 
   function switchTab(name) {
     tabButtons.forEach(function (btn) {
@@ -131,8 +135,12 @@
     });
     if (statsPanel) statsPanel.hidden = name !== "stats";
     if (podcastsPanel) podcastsPanel.hidden = name !== "podcasts";
+    if (articlesPanel) articlesPanel.hidden = name !== "articles";
     if (name === "podcasts" && window.AdminPodcasts && window.AdminPodcasts.loadList) {
       window.AdminPodcasts.loadList();
+    }
+    if (name === "articles" && window.AdminArticles && window.AdminArticles.loadList) {
+      window.AdminArticles.loadList();
     }
   }
 

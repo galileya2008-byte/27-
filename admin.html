@@ -15,7 +15,7 @@
       <h1 class="section__title">Админка сайта</h1>
 
       <section class="form" id="admin-auth">
-        <p class="form__hint">Войдите через Supabase, чтобы смотреть статистику и добавлять подкасты.</p>
+        <p class="form__hint">Войдите через Supabase, чтобы смотреть статистику и добавлять материалы.</p>
         <div class="form__row">
           <label class="form__label" for="admin-email">Email</label>
           <input class="form__input" type="email" id="admin-email" autocomplete="email" />
@@ -32,6 +32,7 @@
         <div class="admin-tabs hero__actions" style="margin-bottom: 1.25rem;">
           <button type="button" class="btn btn--primary admin-tab is-active" data-tab="stats">Статистика</button>
           <button type="button" class="btn btn--ghost admin-tab" data-tab="podcasts">Подкасты</button>
+          <button type="button" class="btn btn--ghost admin-tab" data-tab="articles">Статьи</button>
           <button id="logout-stats" class="btn btn--ghost" type="button" style="margin-left:auto;">Выйти</button>
         </div>
 
@@ -90,6 +91,46 @@
           <h2 class="podcast-admin__title" style="margin-top:2rem;">Опубликованные выпуски</h2>
           <div id="podcast-admin-list" class="podcast-admin-list"></div>
         </section>
+
+        <section class="form" id="admin-articles-panel" hidden>
+          <h2 class="podcast-admin__title">Добавить статью</h2>
+          <p class="form__hint">Статья появится в разделе «База знаний эксперта». Ссылка: <code>blog.html#article-ваш-slug</code></p>
+          <form id="article-form" novalidate>
+            <div class="form__row">
+              <label class="form__label" for="article-slug">Slug (для ссылки)</label>
+              <input class="form__input" type="text" id="article-slug" name="slug" required placeholder="kak-sdelat-sait" pattern="[a-z0-9-]+" />
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="article-title">Заголовок</label>
+              <input class="form__input" type="text" id="article-title" name="title" required />
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="article-desc">Краткое описание (на карточке)</label>
+              <textarea class="form__input form__textarea" id="article-desc" name="description" rows="3" required></textarea>
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="article-content">Текст статьи</label>
+              <textarea class="form__input form__textarea" id="article-content" name="content" rows="10" required></textarea>
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="article-date">Дата публикации</label>
+              <input class="form__input" type="date" id="article-date" name="published_at" required />
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="article-image-file">Обложка (JPG, PNG, WebP)</label>
+              <input class="form__input" type="file" id="article-image-file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" />
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="article-image-url">Или ссылка на изображение</label>
+              <input class="form__input" type="text" id="article-image-url" name="image_url" placeholder="https://..." />
+            </div>
+            <button type="submit" class="btn btn--primary">Опубликовать статью</button>
+            <p class="form__status" id="article-form-status" role="status" aria-live="polite"></p>
+          </form>
+
+          <h2 class="podcast-admin__title" style="margin-top:2rem;">Опубликованные статьи</h2>
+          <div id="article-admin-list" class="podcast-admin-list"></div>
+        </section>
       </section>
     </div>
   </main>
@@ -98,5 +139,6 @@
   <script src="js/supabase-config.js"></script>
   <script src="js/admin.js"></script>
   <script src="js/admin-podcasts.js"></script>
+  <script src="js/admin-articles.js"></script>
 </body>
 </html>

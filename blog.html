@@ -53,11 +53,10 @@
   <main id="main">
     <section class="section blog-hero" aria-labelledby="blog-title">
       <div class="container">
-        <p class="blog-hero__label reveal">База знаний эксперта · подкасты</p>
-        <h1 class="section__title reveal" id="blog-title">Полезные выпуски для экспертов и бизнеса</h1>
+        <p class="blog-hero__label reveal">База знаний эксперта · подкасты и статьи</p>
+        <h1 class="section__title reveal" id="blog-title">Полезные материалы для экспертов и бизнеса</h1>
         <p class="blog-hero__lead reveal">
-          Здесь — аудио и текстовые материалы о сайтах, воронках, автоматизации и росте заявок.
-          К каждому выпуску — краткое описание и полный текст, если хотите прочитать вместо прослушивания.
+          Здесь — подкасты, статьи с иллюстрациями и практические материалы о сайтах, воронках, автоматизации и росте заявок.
         </p>
       </div>
     </section>
@@ -71,6 +70,16 @@
           <article class="podcast-player" id="podcast-player" aria-live="polite"></article>
         </div>
         <p class="blog-feed__empty" id="podcast-empty" hidden>Пока нет опубликованных выпусков. Скоро здесь появятся первые подкасты.</p>
+      </div>
+    </section>
+
+    <section class="section blog-feed blog-feed--articles" aria-labelledby="articles-title">
+      <div class="container">
+        <h2 class="section__title section__title--center reveal" id="articles-title">Полезные статьи</h2>
+        <p class="blog-feed__hint reveal">Выберите статью — ниже откроется полный текст с изображением. Каждая статья имеет свою ссылку для Telegram и соцсетей.</p>
+        <div class="articles-grid reveal" id="articles-grid" hidden></div>
+        <article class="article-reader reveal" id="article-reader" hidden aria-live="polite"></article>
+        <p class="blog-feed__empty" id="articles-empty" hidden>Пока нет опубликованных статей. Скоро здесь появятся первые материалы.</p>
       </div>
     </section>
 
@@ -105,6 +114,7 @@
   <script src="js/metrika-config.js"></script>
   <script src="js/supabase-config.js"></script>
   <script src="js/podcasts.js"></script>
+  <script src="js/articles.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

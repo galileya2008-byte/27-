@@ -106,7 +106,34 @@
     authBox.setAttribute("hidden", "");
     panelBox.removeAttribute("hidden");
     loadStats();
+    if (window.AdminPodcasts && window.AdminPodcasts.loadList) {
+      window.AdminPodcasts.loadList();
+    }
   }
+
+  var tabButtons = document.querySelectorAll(".admin-tab");
+  var statsPanel = document.getElementById("admin-stats-panel");
+  var podcastsPanel = document.getElementById("admin-podcasts-panel");
+
+  function switchTab(name) {
+    tabButtons.forEach(function (btn) {
+      var active = btn.getAttribute("data-tab") === name;
+      btn.classList.toggle("is-active", active);
+      btn.classList.toggle("btn--primary", active);
+      btn.classList.toggle("btn--ghost", !active);
+    });
+    if (statsPanel) statsPanel.hidden = name !== "stats";
+    if (podcastsPanel) podcastsPanel.hidden = name !== "podcasts";
+    if (name === "podcasts" && window.AdminPodcasts && window.AdminPodcasts.loadList) {
+      window.AdminPodcasts.loadList();
+    }
+  }
+
+  tabButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      switchTab(btn.getAttribute("data-tab"));
+    });
+  });
 
   client.auth.getSession().then(function (res) {
     if (res.data && res.data.session) {

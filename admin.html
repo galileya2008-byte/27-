@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Админка статистики</title>
+  <title>Админка сайта</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Figtree:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
@@ -12,10 +12,10 @@
 <body class="page">
   <main class="section">
     <div class="container">
-      <h1 class="section__title">Статистика сайта</h1>
+      <h1 class="section__title">Админка сайта</h1>
 
       <section class="form" id="admin-auth">
-        <p class="form__hint">Войдите через Supabase Auth, чтобы смотреть статистику.</p>
+        <p class="form__hint">Войдите через Supabase, чтобы смотреть статистику и добавлять подкасты.</p>
         <div class="form__row">
           <label class="form__label" for="admin-email">Email</label>
           <input class="form__input" type="email" id="admin-email" autocomplete="email" />
@@ -28,19 +28,68 @@
         <p class="form__status" id="admin-status" role="status" aria-live="polite"></p>
       </section>
 
-      <section class="form" id="admin-panel" hidden>
-        <p class="form__hint">Данные обновляются кнопкой ниже.</p>
-        <div class="hero__actions" style="margin-bottom: 1rem;">
-          <button id="refresh-stats" class="btn btn--primary" type="button">Обновить</button>
-          <button id="logout-stats" class="btn btn--ghost" type="button">Выйти</button>
+      <section id="admin-panel" hidden>
+        <div class="admin-tabs hero__actions" style="margin-bottom: 1.25rem;">
+          <button type="button" class="btn btn--primary admin-tab is-active" data-tab="stats">Статистика</button>
+          <button type="button" class="btn btn--ghost admin-tab" data-tab="podcasts">Подкасты</button>
+          <button id="logout-stats" class="btn btn--ghost" type="button" style="margin-left:auto;">Выйти</button>
         </div>
-        <div class="cards" id="stats-cards"></div>
-        <div class="form__row">
-          <label class="form__label">Последние 30 визитов</label>
-          <div style="overflow:auto;">
-            <table id="stats-table" style="width:100%; border-collapse: collapse;"></table>
+
+        <section class="form" id="admin-stats-panel">
+          <p class="form__hint">Визиты за последние 7 дней.</p>
+          <button id="refresh-stats" class="btn btn--primary" type="button" style="margin-bottom:1rem;">Обновить</button>
+          <div class="cards" id="stats-cards"></div>
+          <div class="form__row">
+            <label class="form__label">Последние 30 визитов</label>
+            <div style="overflow:auto;">
+              <table id="stats-table" style="width:100%; border-collapse: collapse;"></table>
+            </div>
           </div>
-        </div>
+        </section>
+
+        <section class="form" id="admin-podcasts-panel" hidden>
+          <h2 class="podcast-admin__title">Добавить выпуск</h2>
+          <p class="form__hint">После публикации скопируйте ссылку и отправляйте в Telegram. Формат: <code>blog.html#ваш-slug</code></p>
+          <form id="podcast-form" novalidate>
+            <div class="form__row">
+              <label class="form__label" for="podcast-slug">Slug (для ссылки)</label>
+              <input class="form__input" type="text" id="podcast-slug" name="slug" required placeholder="vypusk-3" pattern="[a-z0-9-]+" />
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="podcast-title">Заголовок</label>
+              <input class="form__input" type="text" id="podcast-title" name="title" required />
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="podcast-desc">Описание (о чём выпуск)</label>
+              <textarea class="form__input form__textarea" id="podcast-desc" name="description" rows="3" required></textarea>
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="podcast-article">Текст выпуска</label>
+              <textarea class="form__input form__textarea" id="podcast-article" name="article" rows="6"></textarea>
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="podcast-duration">Длительность</label>
+              <input class="form__input" type="text" id="podcast-duration" name="duration" placeholder="12 мин" />
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="podcast-date">Дата публикации</label>
+              <input class="form__input" type="date" id="podcast-date" name="published_at" required />
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="podcast-audio-file">Аудио MP3 (загрузка)</label>
+              <input class="form__input" type="file" id="podcast-audio-file" accept="audio/mpeg,audio/mp3,.mp3" />
+            </div>
+            <div class="form__row">
+              <label class="form__label" for="podcast-audio-url">Или ссылка / путь к аудио</label>
+              <input class="form__input" type="text" id="podcast-audio-url" name="audio_url" placeholder="audio/vypusk-3.mp3 или https://..." />
+            </div>
+            <button type="submit" class="btn btn--primary">Опубликовать выпуск</button>
+            <p class="form__status" id="podcast-form-status" role="status" aria-live="polite"></p>
+          </form>
+
+          <h2 class="podcast-admin__title" style="margin-top:2rem;">Опубликованные выпуски</h2>
+          <div id="podcast-admin-list" class="podcast-admin-list"></div>
+        </section>
       </section>
     </div>
   </main>
@@ -48,5 +97,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-config.js"></script>
   <script src="js/admin.js"></script>
+  <script src="js/admin-podcasts.js"></script>
 </body>
 </html>

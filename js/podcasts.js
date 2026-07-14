@@ -1,9 +1,8 @@
 (function () {
   "use strict";
 
-  // Добавляйте новые выпуски в начало массива.
-  // Прямая ссылка на выпуск: blog.html#vypusk-1
-  var PODCASTS = [
+  // Резервные выпуски, если Supabase ещё не подключён
+  var FALLBACK_PODCASTS = [
     {
       id: "vypusk-1",
       title: "Зачем эксперту свой сайт, а не только соцсети",
@@ -29,6 +28,8 @@
         "Рассказываю, как выбрать формат под нишу и как связать интерактив с Telegram, WhatsApp или оплатой."
     }
   ];
+
+  var PODCASTS = [];
 
   var catalogEl = document.getElementById("podcast-catalog");
   var navEl = document.getElementById("podcast-nav");
@@ -207,6 +208,43 @@
     }
   }
 
+  function fetchPodcastsFromSupabase() {
+    var cfg = window.SITE_SUPABASE_CONFIG || {};
+    if (!cfg.url || !cfg.anonKey || cfg.url.indexOf("YOUR_PROJECT_REF") !== -1) {
+      return Promise.resolve(null);
+    }
+    return fetch(
+      cfg.url +
+        "/rest/v1/podcasts?select=slug,title,description,article,audio_url,duration,published_at&order=published_at.desc",
+      {
+        headers: {
+          apikey: cfg.anonKey,
+          Authorization: "Bearer " + cfg.anonKey
+        }
+      }
+    )
+      .then(function (res) {
+        return res.json();
+      })
+      .then(function (rows) {
+        if (!Array.isArray(rows) || !rows.length) return null;
+        return rows.map(function (row) {
+          return {
+            id: row.slug,
+            title: row.title,
+            description: row.description,
+            article: row.article,
+            audio: row.audio_url,
+            date: row.published_at,
+            duration: row.duration || "—"
+          };
+        });
+      })
+      .catch(function () {
+        return null;
+      });
+  }
+
   function initCatalog() {
     if (!PODCASTS.length) {
       catalogEl.setAttribute("hidden", "");
@@ -231,5 +269,8 @@
     selectEpisode(getIdFromUrl(), false);
   }
 
-  initCatalog();
+  fetchPodcastsFromSupabase().then(function (remote) {
+    PODCASTS = remote && remote.length ? remote : FALLBACK_PODCASTS;
+    initCatalog();
+  });
 })();

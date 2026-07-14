@@ -54,7 +54,7 @@ window.SITE_METRIKA_ID = 104825673;
 
 | Идентификатор | Когда срабатывает |
 |---|---|
-| `telegram_click` | клик по ссылке в Telegram |
+| `telegram_click` | клик по ссылке в Telegram (`telegram.me/galina1901`) |
 | `interactive_pay` | клик «Забронировать интерактив» |
 | `quiz_complete` | пользователь прошёл мини-квиз |
 | `lead_submit` | заявка успешно отправлена с формы |

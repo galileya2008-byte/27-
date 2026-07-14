@@ -5,6 +5,11 @@
   var BOT_TOKEN = "8605850996:AAFy0j4FMt6wrcAIFQsRcQ6sV5X_BAC_ATA";
   var CHAT_ID = "526988738";
   var TELEGRAM_HANDLE = "galina1901";
+  var TELEGRAM_BASE = "https://telegram.me";
+
+  function telegramLink(path) {
+    return TELEGRAM_BASE + "/" + path;
+  }
   var INTERACTIVE_PROMO_END = new Date(2026, 6, 13);
 
   function getInteractivePricing() {
@@ -340,7 +345,7 @@
       "Цель: " + goalLabel + "\n" +
       "Хочу обсудить проект."
     );
-    quizResultLink.href = "https://t.me/galina1901?text=" + tgText;
+    quizResultLink.href = telegramLink("galina1901") + "?text=" + tgText;
     if (quizResultPay) {
       if (quizAnswers.need === "quiz") {
         var pricing = getInteractivePricing();
@@ -420,7 +425,7 @@
         return;
       }
 
-      var tgLink = "https://t.me/" + TELEGRAM_HANDLE + "?text=" + encodeURIComponent("Здравствуйте! Оставляю заявку с сайта.");
+      var tgLink = telegramLink(TELEGRAM_HANDLE) + "?text=" + encodeURIComponent("Здравствуйте! Оставляю заявку с сайта.");
 
       if (!BOT_TOKEN || !CHAT_ID) {
         formStatus.className = "form__status is-err";
@@ -541,7 +546,7 @@
       var link = e.target && e.target.closest ? e.target.closest("a[href]") : null;
       if (!link) return;
       var href = link.getAttribute("href") || "";
-      if (href.indexOf("t.me/galina1901") !== -1) {
+      if (href.indexOf("galina1901") !== -1 && (href.indexOf("telegram.me") !== -1 || href.indexOf("t.me") !== -1)) {
         reachMetrikaGoal("telegram_click");
       }
       if (href.indexOf("neirogalina.ru/interactiv_voronka") !== -1) {

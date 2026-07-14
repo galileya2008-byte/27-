@@ -64,8 +64,12 @@
 
     <section class="section blog-feed" aria-labelledby="podcasts-title">
       <div class="container">
-        <h2 class="section__title section__title--center reveal" id="podcasts-title">Выпуски</h2>
-        <div class="podcast-list" id="podcast-list" aria-live="polite"></div>
+        <h2 class="section__title section__title--center reveal" id="podcasts-title">Каталог выпусков</h2>
+        <p class="blog-feed__hint reveal">Выберите выпуск слева — справа откроется плеер и текст. Каждый выпуск имеет свою ссылку для отправки в Telegram или соцсетях.</p>
+        <div class="podcast-catalog reveal" id="podcast-catalog" hidden>
+          <nav class="podcast-catalog__nav" id="podcast-nav" aria-label="Список выпусков"></nav>
+          <article class="podcast-player" id="podcast-player" aria-live="polite"></article>
+        </div>
         <p class="blog-feed__empty" id="podcast-empty" hidden>Пока нет опубликованных выпусков. Скоро здесь появятся первые подкасты.</p>
       </div>
     </section>

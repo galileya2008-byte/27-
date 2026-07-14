@@ -2,7 +2,7 @@
   "use strict";
 
   // Добавляйте новые выпуски в начало массива.
-  // audio — путь к файлу в папке audio/ (например "audio/vypusk-1.mp3")
+  // Прямая ссылка на выпуск: blog.html#vypusk-1
   var PODCASTS = [
     {
       id: "vypusk-1",
@@ -30,9 +30,13 @@
     }
   ];
 
-  var listEl = document.getElementById("podcast-list");
+  var catalogEl = document.getElementById("podcast-catalog");
+  var navEl = document.getElementById("podcast-nav");
+  var playerEl = document.getElementById("podcast-player");
   var emptyEl = document.getElementById("podcast-empty");
-  if (!listEl) return;
+  var activeId = null;
+
+  if (!catalogEl || !navEl || !playerEl) return;
 
   function formatDate(iso) {
     if (!iso) return "";
@@ -64,61 +68,168 @@
       .join("");
   }
 
-  function renderPodcasts() {
-    if (!PODCASTS.length) {
-      listEl.innerHTML = "";
-      if (emptyEl) emptyEl.removeAttribute("hidden");
-      return;
+  function getEpisode(id) {
+    for (var i = 0; i < PODCASTS.length; i++) {
+      if (PODCASTS[i].id === id) return { ep: PODCASTS[i], index: i };
     }
-    if (emptyEl) emptyEl.setAttribute("hidden", "");
+    return null;
+  }
 
-    listEl.innerHTML = PODCASTS.map(function (ep, index) {
-      var hasAudio = ep.audio && ep.audio.trim();
-      var audioBlock = hasAudio
-        ? '<audio class="podcast-card__audio" controls preload="metadata" src="' + escapeHtml(ep.audio) + '">' +
-          "Ваш браузер не поддерживает аудио." +
-          "</audio>"
-        : '<p class="podcast-card__audio-soon">Аудио скоро будет добавлено. Пока можно прочитать текст выпуска ниже.</p>';
+  function episodeNumber(index) {
+    return PODCASTS.length - index;
+  }
 
-      return (
-        '<article class="podcast-card reveal" id="' + escapeHtml(ep.id) + '">' +
-        '<div class="podcast-card__head">' +
-        '<span class="podcast-card__num">Выпуск ' + (PODCASTS.length - index) + "</span>" +
-        '<time class="podcast-card__date" datetime="' + escapeHtml(ep.date) + '">' + formatDate(ep.date) + "</time>" +
-        (ep.duration && ep.duration !== "—" ? '<span class="podcast-card__duration">' + escapeHtml(ep.duration) + "</span>" : "") +
-        "</div>" +
-        '<h3 class="podcast-card__title">' + escapeHtml(ep.title) + "</h3>" +
-        '<p class="podcast-card__desc">' + escapeHtml(ep.description) + "</p>" +
-        audioBlock +
-        (ep.article
-          ? '<div class="podcast-card__article">' + renderArticle(ep.article) + "</div>"
-          : "") +
-        "</article>"
-      );
-    }).join("");
+  function episodeShareUrl(id) {
+    var base = window.location.href.split("#")[0].split("?")[0];
+    return base + "#" + id;
+  }
 
-    if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      var cards = listEl.querySelectorAll(".podcast-card.reveal");
-      var io = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add("is-visible");
-            io.unobserve(entry.target);
+  function getIdFromUrl() {
+    var hash = (window.location.hash || "").replace(/^#/, "");
+    if (hash && getEpisode(hash)) return hash;
+    return PODCASTS.length ? PODCASTS[0].id : null;
+  }
+
+  function renderNav() {
+    navEl.innerHTML =
+      '<p class="podcast-catalog__nav-title">Все выпуски</p>' +
+      '<div class="podcast-catalog__nav-list">' +
+      PODCASTS.map(function (ep, index) {
+        var num = episodeNumber(index);
+        var isActive = ep.id === activeId;
+        return (
+          '<button type="button" class="podcast-nav__item' +
+          (isActive ? " is-active" : "") +
+          '" data-id="' +
+          escapeHtml(ep.id) +
+          '" aria-current="' +
+          (isActive ? "true" : "false") +
+          '">' +
+          '<span class="podcast-nav__num">№' +
+          num +
+          "</span>" +
+          '<span class="podcast-nav__body">' +
+          '<span class="podcast-nav__title">' +
+          escapeHtml(ep.title) +
+          "</span>" +
+          '<span class="podcast-nav__meta">' +
+          formatDate(ep.date) +
+          (ep.duration && ep.duration !== "—" ? " · " + escapeHtml(ep.duration) : "") +
+          "</span>" +
+          "</span>" +
+          "</button>"
+        );
+      }).join("") +
+      "</div>";
+  }
+
+  function renderPlayer(ep, index) {
+    var hasAudio = ep.audio && ep.audio.trim();
+    var num = episodeNumber(index);
+    var shareUrl = episodeShareUrl(ep.id);
+
+    var audioBlock = hasAudio
+      ? '<audio class="podcast-player__audio" controls preload="metadata" src="' +
+        escapeHtml(ep.audio) +
+        '">Ваш браузер не поддерживает аудио.</audio>'
+      : '<p class="podcast-player__audio-soon">Аудио скоро будет добавлено. Пока можно прочитать текст выпуска ниже.</p>';
+
+    playerEl.innerHTML =
+      '<div class="podcast-player__head">' +
+      '<div class="podcast-player__labels">' +
+      '<span class="podcast-player__num">Выпуск №' +
+      num +
+      "</span>" +
+      '<time class="podcast-player__date" datetime="' +
+      escapeHtml(ep.date) +
+      '">' +
+      formatDate(ep.date) +
+      "</time>" +
+      (ep.duration && ep.duration !== "—"
+        ? '<span class="podcast-player__duration">' + escapeHtml(ep.duration) + "</span>"
+        : "") +
+      "</div>" +
+      '<button type="button" class="btn btn--ghost podcast-player__share" id="podcast-share-btn" data-url="' +
+      escapeHtml(shareUrl) +
+      '">Скопировать ссылку</button>' +
+      "</div>" +
+      '<h3 class="podcast-player__title">' +
+      escapeHtml(ep.title) +
+      "</h3>" +
+      '<p class="podcast-player__desc">' +
+      escapeHtml(ep.description) +
+      "</p>" +
+      audioBlock +
+      (ep.article ? '<div class="podcast-player__article">' + renderArticle(ep.article) + "</div>" : "") +
+      '<p class="podcast-player__share-hint" id="podcast-share-status" role="status" aria-live="polite"></p>';
+
+    document.title = ep.title + " — подкаст · Галина Оноприенко";
+
+    var shareBtn = document.getElementById("podcast-share-btn");
+    var shareStatus = document.getElementById("podcast-share-status");
+    if (shareBtn) {
+      shareBtn.addEventListener("click", function () {
+        var url = shareBtn.getAttribute("data-url") || shareUrl;
+        function showOk() {
+          if (shareStatus) shareStatus.textContent = "Ссылка скопирована — можно отправлять в Telegram или соцсети.";
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(showOk).catch(function () {
+            if (shareStatus) shareStatus.textContent = url;
           });
-        },
-        { root: null, rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
-      );
-      cards.forEach(function (el, i) {
-        el.style.transitionDelay = i * 0.06 + "s";
-        io.observe(el);
+        } else {
+          if (shareStatus) shareStatus.textContent = url;
+        }
       });
-    } else {
-      listEl.querySelectorAll(".podcast-card.reveal").forEach(function (el) {
-        el.classList.add("is-visible");
-      });
+    }
+
+    if (hasAudio) {
+      var audio = playerEl.querySelector(".podcast-player__audio");
+      if (audio && window.location.hash.replace(/^#/, "") === ep.id) {
+        audio.play().catch(function () {});
+      }
     }
   }
 
-  renderPodcasts();
+  function selectEpisode(id, scrollToPlayer) {
+    var found = getEpisode(id);
+    if (!found) return;
+    activeId = id;
+    renderNav();
+    renderPlayer(found.ep, found.index);
+    if (history.replaceState) {
+      history.replaceState(null, "", "#" + id);
+    } else {
+      window.location.hash = id;
+    }
+    if (scrollToPlayer && window.matchMedia("(max-width: 899px)").matches) {
+      playerEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  function initCatalog() {
+    if (!PODCASTS.length) {
+      catalogEl.setAttribute("hidden", "");
+      if (emptyEl) emptyEl.removeAttribute("hidden");
+      return;
+    }
+    catalogEl.removeAttribute("hidden");
+    if (emptyEl) emptyEl.setAttribute("hidden", "");
+
+    navEl.addEventListener("click", function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest(".podcast-nav__item") : null;
+      if (!btn) return;
+      var id = btn.getAttribute("data-id");
+      if (id) selectEpisode(id, true);
+    });
+
+    window.addEventListener("hashchange", function () {
+      var id = getIdFromUrl();
+      if (id && id !== activeId) selectEpisode(id, true);
+    });
+
+    selectEpisode(getIdFromUrl(), false);
+  }
+
+  initCatalog();
 })();

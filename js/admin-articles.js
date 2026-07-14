@@ -5,10 +5,46 @@
   var client = null;
 
   function getClient() {
+    if (window.getAdminSupabaseClient) return window.getAdminSupabaseClient();
     if (client) return client;
     if (!cfg.url || !cfg.anonKey || cfg.url.indexOf("YOUR") !== -1 || cfg.anonKey.indexOf("YOUR") !== -1) return null;
     client = window.supabase.createClient(cfg.url, cfg.anonKey);
     return client;
+  }
+
+  function isMissingTableError(err) {
+    if (!err) return false;
+    var msg = String(err.message || err);
+    return msg.indexOf("articles") !== -1 && (msg.indexOf("PGRST205") !== -1 || msg.indexOf("Could not find the table") !== -1);
+  }
+
+  function showSetupBanner() {
+    var panel = document.getElementById("admin-articles-panel");
+    if (!panel || panel.querySelector(".articles-setup-banner")) return;
+    var banner = document.createElement("div");
+    banner.className = "articles-setup-banner form__status is-err";
+    banner.style.marginBottom = "1rem";
+    banner.innerHTML =
+      "<strong>Таблица статей ещё не создана в Supabase.</strong><br>" +
+      "Откройте Supabase → SQL Editor → вставьте и выполните файл <code>supabase/setup-articles.sql</code> из репозитория. " +
+      "После этого обновите страницу админки.";
+    panel.insertBefore(banner, panel.firstChild);
+  }
+
+  function clearSetupBanner() {
+    var banner = document.querySelector(".articles-setup-banner");
+    if (banner) banner.remove();
+  }
+
+  function humanizeError(err) {
+    if (isMissingTableError(err)) {
+      showSetupBanner();
+      return "Таблица articles не найдена. Выполните supabase/setup-articles.sql в Supabase → SQL Editor.";
+    }
+    if (err && err.message && err.message.indexOf("row-level security") !== -1) {
+      return "Нет прав на запись. Выйдите и войдите в админку снова.";
+    }
+    return err && err.message ? err.message : String(err);
   }
 
   function setFormStatus(text, isError) {
@@ -110,7 +146,7 @@
           .eq("slug", slug)
           .then(function (res) {
             if (res.error) {
-              setFormStatus("Ошибка удаления: " + res.error.message, true);
+              setFormStatus("Ошибка удаления: " + humanizeError(res.error), true);
               return;
             }
             loadList();
@@ -127,9 +163,10 @@
       .order("published_at", { ascending: false })
       .then(function (res) {
         if (res.error) {
-          setFormStatus("Не удалось загрузить список: " + res.error.message, true);
+          setFormStatus("Не удалось загрузить список: " + humanizeError(res.error), true);
           return;
         }
+        clearSetupBanner();
         renderList(res.data || []);
       });
   }
@@ -219,11 +256,11 @@
         uploadImage(file, slug)
           .then(saveArticle)
           .catch(function (err) {
-            setFormStatus("Ошибка загрузки изображения: " + (err.message || err), true);
+            setFormStatus("Ошибка загрузки изображения: " + humanizeError(err), true);
           });
       } else {
         saveArticle(imageUrlInput).catch(function (err) {
-          setFormStatus("Ошибка: " + (err.message || err), true);
+          setFormStatus("Ошибка: " + humanizeError(err), true);
         });
       }
     });

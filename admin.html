@@ -93,6 +93,9 @@
         </section>
 
         <section class="form" id="admin-articles-panel" hidden>
+          <p class="form__hint" id="articles-setup-hint">
+            Если статьи не сохраняются — один раз выполните SQL из файла <code>supabase/setup-articles.sql</code> в Supabase → SQL Editor.
+          </p>
           <h2 class="podcast-admin__title">Добавить статью</h2>
           <p class="form__hint">Статья появится в разделе «База знаний эксперта». Ссылка: <code>blog.html#article-ваш-slug</code></p>
           <form id="article-form" novalidate>

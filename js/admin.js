@@ -32,6 +32,9 @@
   }
 
   var client = window.supabase.createClient(cfg.url, cfg.anonKey);
+  window.getAdminSupabaseClient = function () {
+    return client;
+  };
 
   function formatDate(iso) {
     if (!iso) return "—";

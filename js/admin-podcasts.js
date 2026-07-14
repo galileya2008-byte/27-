@@ -5,6 +5,7 @@
   var client = null;
 
   function getClient() {
+    if (window.getAdminSupabaseClient) return window.getAdminSupabaseClient();
     if (client) return client;
     if (!cfg.url || !cfg.anonKey || cfg.url.indexOf("YOUR") !== -1 || cfg.anonKey.indexOf("YOUR") !== -1) return null;
     client = window.supabase.createClient(cfg.url, cfg.anonKey);

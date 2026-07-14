@@ -1,4 +1,4 @@
 window.SITE_SUPABASE_CONFIG = {
-  url: "https://YOUR_PROJECT_REF.supabase.co",
-  anonKey: "YOUR_SUPABASE_ANON_KEY"
+  url: "https://zytfjyvphxlarusxdwdg.supabase.co",
+  anonKey: "sb_publishable_tl3WVuExwL7E_FmBHyue2w_DaZR7G5t"
 };

@@ -594,7 +594,7 @@
     }
 
     var cfg = window.SITE_SUPABASE_CONFIG || {};
-    if (!cfg.url || !cfg.anonKey || cfg.url.indexOf("YOUR_PROJECT_REF") !== -1) return;
+    if (!cfg.url || !cfg.anonKey || cfg.url.indexOf("YOUR") !== -1 || cfg.anonKey.indexOf("YOUR") !== -1) return;
 
     fetch(cfg.url + "/rest/v1/visits", {
       method: "POST",

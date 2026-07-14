@@ -210,7 +210,7 @@
 
   function fetchPodcastsFromSupabase() {
     var cfg = window.SITE_SUPABASE_CONFIG || {};
-    if (!cfg.url || !cfg.anonKey || cfg.url.indexOf("YOUR_PROJECT_REF") !== -1) {
+    if (!cfg.url || !cfg.anonKey || cfg.url.indexOf("YOUR") !== -1 || cfg.anonKey.indexOf("YOUR") !== -1) {
       return Promise.resolve(null);
     }
     return fetch(

@@ -19,8 +19,15 @@
     statusEl.className = isError ? "form__status is-err" : "form__status";
   }
 
-  if (!cfg.url || !cfg.anonKey || cfg.url.indexOf("YOUR_PROJECT_REF") !== -1) {
-    setStatus("Заполните js/supabase-config.js: url и anonKey.", true);
+  function isConfigValid() {
+    if (!cfg.url || !cfg.anonKey) return false;
+    if (cfg.url.indexOf("YOUR") !== -1 || cfg.anonKey.indexOf("YOUR") !== -1) return false;
+    if (cfg.url.indexOf("supabase.co") === -1) return false;
+    return true;
+  }
+
+  if (!isConfigValid()) {
+    setStatus("Проверьте js/supabase-config.js: url и anonKey должны быть без шаблонных YOUR_...", true);
     return;
   }
 
@@ -151,12 +158,25 @@
     setStatus("Выполняю вход...", false);
     client.auth.signInWithPassword({ email: email, password: password }).then(function (res) {
       if (res.error) {
-        setStatus("Ошибка входа: " + res.error.message, true);
+        var msg = res.error.message;
+        if (msg.indexOf("Invalid login credentials") !== -1) {
+          msg = "Неверный email или пароль. Проверьте данные пользователя в Supabase → Authentication → Users.";
+        } else if (msg.indexOf("Email not confirmed") !== -1) {
+          msg = "Email не подтверждён. В Supabase откройте пользователя и включите Auto Confirm User.";
+        }
+        setStatus("Ошибка входа: " + msg, true);
         return;
       }
+      setStatus("", false);
       showPanel();
     });
   });
+
+  if (passwordEl) {
+    passwordEl.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") loginBtn.click();
+    });
+  }
 
   refreshBtn.addEventListener("click", loadStats);
   logoutBtn.addEventListener("click", function () {

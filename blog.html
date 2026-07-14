@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Блог и подкасты Галины Оноприенко — полезные выпуски о сайтах, воронках, AI и продажах для экспертов и бизнеса." />
+  <meta name="author" content="Галина Оноприенко" />
+  <meta property="og:title" content="Блог и подкасты — Галина Оноприенко" />
+  <meta property="og:description" content="Аудио-выпуски и статьи о сайтах, автоматизации и росте заявок." />
+  <meta property="og:type" content="website" />
+  <title>Блог и подкасты — Галина Оноприенко</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Figtree:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="page">
+  <a class="skip-link" href="#main">К основному содержанию</a>
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true" role="presentation">
+    <div class="scroll-progress__bar" id="scroll-progress-bar"></div>
+  </div>
+  <div class="neuroline" aria-hidden="true">
+    <span class="neuroline__beam neuroline__beam--core"></span>
+    <span class="neuroline__beam neuroline__beam--glow"></span>
+  </div>
+
+  <header class="header" id="top">
+    <div class="header__inner">
+      <div class="header__brand">
+        <a href="index.html" class="header__name header__name--link">Галина Оноприенко</a>
+        <span class="header__divider" aria-hidden="true">·</span>
+        <span class="header__tag">Vibe Coder</span>
+      </div>
+      <nav class="header__nav" aria-label="Навигация по сайту">
+        <a href="index.html#about" class="header__link">О себе</a>
+        <a href="index.html#projects" class="header__link">Проекты</a>
+        <a href="blog.html" class="header__link header__link--active" aria-current="page">Блог</a>
+        <a href="index.html#contact" class="header__link header__link--cta header__link--magnetic">Связаться</a>
+      </nav>
+      <button class="header__menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Открыть меню">
+        <span class="header__menu-line"></span>
+        <span class="header__menu-line"></span>
+      </button>
+    </div>
+    <div class="mobile-nav" id="mobile-nav" hidden>
+      <a href="index.html#about" class="mobile-nav__link">О себе</a>
+      <a href="index.html#projects" class="mobile-nav__link">Проекты</a>
+      <a href="blog.html" class="mobile-nav__link mobile-nav__link--active" aria-current="page">Блог</a>
+      <a href="index.html#contact" class="mobile-nav__link mobile-nav__link--cta mobile-nav__link--magnetic">Связаться</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section blog-hero" aria-labelledby="blog-title">
+      <div class="container">
+        <p class="blog-hero__label reveal">Блог · подкасты</p>
+        <h1 class="section__title reveal" id="blog-title">Полезные выпуски для экспертов и бизнеса</h1>
+        <p class="blog-hero__lead reveal">
+          Здесь — аудио и текстовые материалы о сайтах, воронках, автоматизации и росте заявок.
+          К каждому выпуску — краткое описание и полный текст, если хотите прочитать вместо прослушивания.
+        </p>
+      </div>
+    </section>
+
+    <section class="section blog-feed" aria-labelledby="podcasts-title">
+      <div class="container">
+        <h2 class="section__title section__title--center reveal" id="podcasts-title">Выпуски</h2>
+        <div class="podcast-list" id="podcast-list" aria-live="polite"></div>
+        <p class="blog-feed__empty" id="podcast-empty" hidden>Пока нет опубликованных выпусков. Скоро здесь появятся первые подкасты.</p>
+      </div>
+    </section>
+
+    <section class="section cta-section" aria-labelledby="blog-cta-title">
+      <div class="container cta-section__box reveal">
+        <h2 class="cta-section__title" id="blog-cta-title">Нужен сайт или интерактив под вашу экспертность?</h2>
+        <a href="https://telegram.me/galina1901" class="btn btn--primary btn--large btn--magnetic" target="_blank" rel="noopener noreferrer">Написать в Telegram</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="footer__copy">© <span id="year"></span> Галина Оноприенко. Вайб-кодер · Prompt Engineer</p>
+      <div class="footer__actions">
+        <a href="index.html" class="footer__up">На главную</a>
+        <a href="#top" class="footer__up">Наверх</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-labelledby="cookie-title" aria-describedby="cookie-desc" aria-live="polite" hidden>
+    <div class="cookie-banner__inner">
+      <p class="cookie-banner__title" id="cookie-title">Уведомление о cookie</p>
+      <p class="cookie-banner__text" id="cookie-desc">
+        Мы используем cookie и Яндекс.Метрику для аналитики посещений. Продолжая пользоваться сайтом, вы соглашаетесь с их использованием.
+      </p>
+      <button type="button" class="btn btn--primary cookie-banner__btn" id="cookie-accept">Принять</button>
+    </div>
+  </div>
+
+  <script src="js/metrika-config.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/podcasts.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1619,6 +1619,15 @@ button.btn--primary.btn--magnetic:hover {
   gap: 1rem;
 }
 
+.pricing__legal {
+  max-width: 42em;
+  margin: -0.5rem auto 1.75rem;
+  text-align: center;
+  color: var(--champagne-light);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
 .pricing__item {
   border: 1px solid var(--line);
   border-radius: 12px var(--radius) 12px var(--radius);

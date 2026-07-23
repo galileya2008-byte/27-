@@ -59,7 +59,7 @@
   var heroNumEl = document.getElementById("hero-years");
   if (heroNumEl) {
     if (prefersReduce) {
-      heroNumEl.textContent = String(heroNumEl.getAttribute("data-target") || "15");
+      heroNumEl.textContent = String(heroNumEl.getAttribute("data-target") || "17");
     }
   }
 
@@ -79,9 +79,9 @@
     window.addEventListener("resize", updateScrollProgress, { passive: true });
   }
 
-  // Счётчик «15» в hero (один раз при появлении)
+  // Счётчик лет опыта в hero (один раз при появлении)
   if (heroNumEl && !prefersReduce) {
-    var targetN = parseInt(heroNumEl.getAttribute("data-target"), 10) || 15;
+    var targetN = parseInt(heroNumEl.getAttribute("data-target"), 10) || 17;
     if (!isNaN(targetN)) {
       if ("IntersectionObserver" in window) {
         var countDone = false;

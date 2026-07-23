@@ -10,22 +10,14 @@
   function telegramLink(path) {
     return TELEGRAM_BASE + "/" + path;
   }
-  var INTERACTIVE_PROMO_END = new Date(2026, 6, 13);
+  var INTERACTIVE_PRICE = {
+    price: "10 000",
+    cta: "Забронировать от 10 000 ₽",
+    promoNote: ""
+  };
 
   function getInteractivePricing() {
-    var isPromo = new Date() < INTERACTIVE_PROMO_END;
-    if (isPromo) {
-      return {
-        price: "7 500",
-        cta: "Забронировать за 7 500 ₽",
-        promoNote: "Акция до 12 июля включительно — далее от 10 000 ₽"
-      };
-    }
-    return {
-      price: "10 000",
-      cta: "Забронировать от 10 000 ₽",
-      promoNote: ""
-    };
+    return INTERACTIVE_PRICE;
   }
 
   function applyInteractivePricing() {

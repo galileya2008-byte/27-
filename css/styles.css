@@ -1659,6 +1659,22 @@ button.btn--primary.btn--magnetic:hover {
   color: var(--champagne-light);
 }
 
+.pricing__for {
+  margin: 0.55rem 0 0;
+  color: var(--chocolate-mid);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.pricing__term {
+  margin: 0.45rem 0 0;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--champagne-light);
+}
+
 .pricing__note {
   margin: 0.55rem 0 0;
   color: var(--chocolate-muted);
@@ -1669,6 +1685,8 @@ button.btn--primary.btn--magnetic:hover {
   color: var(--champagne-light);
   font-weight: 500;
 }
+
+.pricing__cta {
   display: inline-flex;
   width: 100%;
   margin-top: 0.9rem;
